@@ -72,6 +72,8 @@ public class MainForm
 			mStartServerButton.setEnabled(false);
 			mStopServerButton.setEnabled(true);
 			mRestartServerButton.setEnabled(true);
+			mContextPathTextField.setEnabled(false);
+			mPortTextField.setEnabled(false);
 		});
 
 		mStopServerButton.addActionListener((e) -> {
@@ -81,6 +83,8 @@ public class MainForm
 			mStartServerButton.setEnabled(true);
 			mStopServerButton.setEnabled(false);
 			mRestartServerButton.setEnabled(false);
+			mContextPathTextField.setEnabled(true);
+			mPortTextField.setEnabled(true);
 		});
 
 		mRestartServerButton.addActionListener((e) -> {
@@ -187,9 +191,11 @@ public class MainForm
 			respTextArea = new JTextArea();
 			respTextArea.setRows(5);
 			respTextArea.setEditable(false);
+			JScrollPane respTextAreaHolder = new JScrollPane();
+			respTextAreaHolder.setViewportView(respTextArea);
 			add(urlTextField);
 			add(contentTypeTextField);
-			add(respTextArea);
+			add(respTextAreaHolder);
 			JPanel btnPanel = new JPanel();
 			btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			btnPanel.add(deleteButton);

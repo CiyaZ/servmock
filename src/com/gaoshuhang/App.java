@@ -14,7 +14,8 @@ public class App
 		EventQueue.invokeLater(() -> {
 			try
 			{
-				//设置全局观感和字体
+				//设置抗锯齿全局观感和字体
+				GoodLookUtil.antiAliasing();
 				GoodLookUtil.setNimbus();
 				GoodLookUtil.setUIFont(new FontUIResource("Serif",Font.PLAIN,15));
 
