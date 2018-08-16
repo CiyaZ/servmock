@@ -1,6 +1,7 @@
 package com.gaoshuhang.form;
 
 import com.gaoshuhang.server.MockServer;
+import com.gaoshuhang.util.EncodingUtil;
 import com.gaoshuhang.util.JTextAreaOutputStream;
 
 import javax.swing.*;
@@ -11,6 +12,9 @@ import java.util.regex.Pattern;
 
 public class MainForm
 {
+
+	public static boolean IS_WINDOWS = false;
+
 	private JFrame frame;
 
 	private JTextField mContextPathTextField;
@@ -27,6 +31,11 @@ public class MainForm
 
 	public MainForm()
 	{
+		if(System.getProperty("os.name").toLowerCase().startsWith("win"))
+		{
+			IS_WINDOWS = true;
+		}
+
 		//UI子组件初始化
 		initUI();
 	}
@@ -275,6 +284,7 @@ public class MainForm
 			confirmButton.addActionListener((e) -> {
 				String urlStr = urlTextField.getText();
 				String respStr = respTextArea.getText();
+				if(IS_WINDOWS) respStr = EncodingUtil.GBKToUtf8(respStr);
 				String contentTypeStr = "text/plain";
 				if(contentTypeComboBox.getSelectedItem() != null)
 				{
@@ -287,7 +297,14 @@ public class MainForm
 					ServiceConfigPanel serviceConfigPanel = new ServiceConfigPanel();
 					serviceConfigPanel.getUrlTextField().setText(urlStr);
 					serviceConfigPanel.getContentTypeTextField().setText(contentTypeStr);
-					serviceConfigPanel.getRespTextArea().setText(respStr);
+					if(IS_WINDOWS)
+					{
+						serviceConfigPanel.getRespTextArea().setText(EncodingUtil.UTF8ToGBK(respStr));
+					}
+					else
+					{
+						serviceConfigPanel.getRespTextArea().setText(respStr);
+					}
 					MainForm.this.mScrollPaneInnerPanel.add(serviceConfigPanel);
 					//更新UI
 					SwingUtilities.updateComponentTreeUI(MainForm.this.mScrollPaneInnerPanel);

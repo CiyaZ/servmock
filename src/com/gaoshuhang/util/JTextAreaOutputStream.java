@@ -1,5 +1,7 @@
 package com.gaoshuhang.util;
 
+import com.gaoshuhang.form.MainForm;
+
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,7 +27,15 @@ public class JTextAreaOutputStream extends OutputStream
 		{
 			baos.write('\n');
 			byte[] bytes = baos.toByteArray();
-			String str = new String(bytes, "UTF-8");
+			String str;
+			if(MainForm.IS_WINDOWS)
+			{
+				str = new String(bytes, "GBK");
+			}
+			else
+			{
+				str = new String(bytes, "UTF-8");
+			}
 			jTextArea.append(str);
 			baos.reset();
 		}
