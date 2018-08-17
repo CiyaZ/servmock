@@ -1,7 +1,6 @@
 package com.gaoshuhang.form;
 
 import com.gaoshuhang.server.MockServer;
-import com.gaoshuhang.util.EncodingUtil;
 import com.gaoshuhang.util.JTextAreaOutputStream;
 
 import javax.swing.*;
@@ -12,9 +11,6 @@ import java.util.regex.Pattern;
 
 public class MainForm
 {
-
-	public static boolean IS_WINDOWS = false;
-
 	private JFrame frame;
 
 	private JTextField mContextPathTextField;
@@ -31,10 +27,10 @@ public class MainForm
 
 	public MainForm()
 	{
-		if(System.getProperty("os.name").toLowerCase().startsWith("win"))
-		{
-			IS_WINDOWS = true;
-		}
+//		if(System.getProperty("os.name").toLowerCase().startsWith("win"))
+//		{
+//			IS_WINDOWS = true;
+//		}
 
 		//UI子组件初始化
 		initUI();
@@ -114,7 +110,6 @@ public class MainForm
 		mScrollPaneInnerPanel.setLayout(new BoxLayout(mScrollPaneInnerPanel, BoxLayout.Y_AXIS));
 
 
-
 		mAddServiceConfigButton.addActionListener((e) -> {
 			AddConfigDialog addConfigDialog = new AddConfigDialog(frame);
 			addConfigDialog.setVisible(true);
@@ -171,7 +166,7 @@ public class MainForm
 			return false;
 		}
 		//错误处理 应用路径不合法
-		if(!contextPathStr.startsWith("/"))
+		if (!contextPathStr.startsWith("/"))
 		{
 			JOptionPane.showMessageDialog(mMainPanel, "ContextPath格式错误", "警告", JOptionPane.WARNING_MESSAGE);
 			return false;
@@ -193,10 +188,10 @@ public class MainForm
 			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 			urlTextField = new JTextField();
 			urlTextField.setEditable(false);
-			urlTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE,urlTextField.getHeight()));
+			urlTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, urlTextField.getHeight()));
 			contentTypeTextField = new JTextField();
 			contentTypeTextField.setEditable(false);
-			contentTypeTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE,contentTypeTextField.getHeight()));
+			contentTypeTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, contentTypeTextField.getHeight()));
 			respTextArea = new JTextArea();
 			respTextArea.setRows(5);
 			respTextArea.setEditable(false);
@@ -284,27 +279,19 @@ public class MainForm
 			confirmButton.addActionListener((e) -> {
 				String urlStr = urlTextField.getText();
 				String respStr = respTextArea.getText();
-				if(IS_WINDOWS) respStr = EncodingUtil.GBKToUtf8(respStr);
 				String contentTypeStr = "text/plain";
-				if(contentTypeComboBox.getSelectedItem() != null)
+				if (contentTypeComboBox.getSelectedItem() != null)
 				{
 					contentTypeStr = contentTypeComboBox.getSelectedItem().toString();
 				}
 
-				if(urlTextFieldCheck(urlStr))
+				if (urlTextFieldCheck(urlStr))
 				{
 					//创建ServiceConfigPanel
 					ServiceConfigPanel serviceConfigPanel = new ServiceConfigPanel();
 					serviceConfigPanel.getUrlTextField().setText(urlStr);
 					serviceConfigPanel.getContentTypeTextField().setText(contentTypeStr);
-					if(IS_WINDOWS)
-					{
-						serviceConfigPanel.getRespTextArea().setText(EncodingUtil.UTF8ToGBK(respStr));
-					}
-					else
-					{
-						serviceConfigPanel.getRespTextArea().setText(respStr);
-					}
+					serviceConfigPanel.getRespTextArea().setText(respStr);
 					MainForm.this.mScrollPaneInnerPanel.add(serviceConfigPanel);
 					//更新UI
 					SwingUtilities.updateComponentTreeUI(MainForm.this.mScrollPaneInnerPanel);
@@ -335,12 +322,12 @@ public class MainForm
 
 		private boolean urlTextFieldCheck(String urlStr)
 		{
-			if("".equals(urlStr))
+			if ("".equals(urlStr))
 			{
 				JOptionPane.showMessageDialog(mMainPanel, "URL不能为空", "警告", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			if(!urlStr.startsWith("/"))
+			if (!urlStr.startsWith("/"))
 			{
 				JOptionPane.showMessageDialog(mMainPanel, "URL格式错误", "警告", JOptionPane.WARNING_MESSAGE);
 				return false;

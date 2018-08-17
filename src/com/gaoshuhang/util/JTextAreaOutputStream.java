@@ -23,19 +23,12 @@ public class JTextAreaOutputStream extends OutputStream
 	public void write(int b) throws IOException
 	{
 		char c = (char) b;
-		if(c == '\n')
+		if (c == '\n')
 		{
 			baos.write('\n');
 			byte[] bytes = baos.toByteArray();
 			String str;
-			if(MainForm.IS_WINDOWS)
-			{
-				str = new String(bytes, "GBK");
-			}
-			else
-			{
-				str = new String(bytes, "UTF-8");
-			}
+			str = new String(bytes, "UTF-8");
 			jTextArea.append(str);
 			baos.reset();
 		}
